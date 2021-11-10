@@ -15,6 +15,10 @@ app.get("/prueba", function(request,response){
     response.send(nombres)
 });
 
+app.get("/misiontic", function(request,response){
+    response.send("Mi primer API 53861")
+});
+
 // Configurar en dónde el API va a estar escuchando las peticiones.
 app.listen(port,function(){
     console.log("API ejecutandose en puerto: " + port);

@@ -1,0 +1,25 @@
+/**
+ *  HTTP
+ *      -> Petición: Solicita/envia información de un recurso.
+ *          -> GET      : Se usa para solicitar/obtener/consultar un rescurso. Utiliza query/params
+ *          -> POST     : Envia información para crear un nuevo recurso. Utiliza query/params/body
+ *          -> PUT      : Actualiza la información de un recurso.
+ *          -> DELETE   : Elimina un recurso.    
+ *      
+ *      -> Respuesta: Contiene la información o el estado de una petición.
+ *          -> 100 - 199    : Informativos.
+ *          -> 200 - 299    : Informan si se ejecutó correctamente la petición.
+ *          -> 300 - 399    : Redirecciona las peticiones.
+ *          -> 400 - 499    : Informa errores del cliente (asociados a la programación).
+ *          -> 500 - 599    : Errores del servidor.
+ * 
+ *          -> Cabeceras (header)   : Información adicional que describe a la petición o a la respuesta.
+ *          -> Cuerpo (body)        : Información/mensaje que se envía al servidor.
+ * 
+ *      -> URL (Uniform Resource Location): 
+ *          -> HTTP://                          : Protocolo.
+ *          -> localhost                        : Host/servidor.
+ *          -> :3000                            : puerto.
+ *          -> /xxx/yyy/zzz                     : path resourse.
+ *          -> ?variable=valor&variable=valor   : Query string. Datos que se envian para completar la petición.
+ */

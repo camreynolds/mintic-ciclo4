@@ -1,16 +1,25 @@
 /**
  * @param Requerido: Importar los módulos.
  */
-const express       = require('express');
-const bodyParser    = require('body-parser');
-const controladorPeliculas = require('./api/peliculas/controller');
-const controladorUsuarios = require('./api/usuarios/controller');
+const express               = require('express');
+const bodyParser            = require('body-parser');
+const morgan                = require('morgan');
+const controladorPeliculas  = require('./api/peliculas/controller');
+const controladorUsuarios   = require('./api/usuarios/controller');
+const basedatos             = require('./database/connection');
+require('dotenv').config();
+
+/**
+ *      NODE -> CREA UN OBJETO LLAMADO "process".
+ *          process.env.PORT
+ */
 
 // Se crea una instancia de "express", he iniciar la configuración.
 const app   = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true})); // Para formularios. Convierte el form-data en json 
-const port  = 3002;
+app.use(morgan(process.env.MORGAN_MODE));
+const port  = process.env.PORT;
 
 
 // Se inicia las rutas.
@@ -18,6 +27,18 @@ app.use("/api/peliculas",controladorPeliculas);
 app.use("/api/usuarios",controladorUsuarios);
 
 // Configurar en dónde el API va a estar escuchando las peticiones.
-app.listen(port,function(){
-    console.log("API ejecutandose en puerto: " + port);
-});
+basedatos.conectar()
+    .then(function(){
+        app.listen(port,function(){
+            console.log("API ejecutandose en puerto: " + port);
+            // console.log(basedatos.obtenerConexion());
+        });
+    })
+    .catch(function(error){
+        console.log("Se presento un error al conectar a la BASE DE DATOS");
+        console.log(error);
+    });
+
+// app.listen(port,function(){
+//     console.log("API ejecutandose en puerto: " + port);
+// });

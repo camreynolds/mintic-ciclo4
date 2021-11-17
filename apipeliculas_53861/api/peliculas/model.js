@@ -35,10 +35,17 @@ function bucarPorId(id){
         });
 };
 
-function bucarPorTitulo(nombre){
+function bucarPorTitulo(nombre,exacta){
     let db = basedatos.obtenerConexion();
+    let busqueda;
 
-    return db.collection("peliculas").find({"titulo": new RegExp(nombre,"i") }).toArray()
+    if(exacta){
+        busqueda = nombre;
+    }else{
+        busqueda = new RegExp(nombre,"i");
+    };
+
+    return db.collection("peliculas").find({"titulo": busqueda}).toArray()
         .then(function(data){
             return data;
         })
@@ -47,7 +54,35 @@ function bucarPorTitulo(nombre){
         });
 };
 
+function crearUna(pelicula){
+    let db = basedatos.obtenerConexion();
+    return db.collection("peliculas").insertOne(pelicula)
+        .then(function(resultado){
+            return resultado;
+        })
+        .catch(function(error){
+            console.log(error);
+        })
+};
+
+function actualizarUna(id,nuevosDatos){
+    let db = basedatos.obtenerConexion();
+
+    return db.collection("peliculas").updateOne(
+        {"_id":objectId(id)}, // Filtro.
+        {"$set":nuevosDatos}, // Operación de actualización --- $set, $unset
+    )
+    .then(function(resultado){
+        return resultado;
+    })
+    .catch(function(error){
+        console.log(error);
+    })
+};
+
 
 module.exports.buscarTodos      = buscarTodos;
 module.exports.bucarPorId       = bucarPorId;
 module.exports.bucarPorTitulo   = bucarPorTitulo;
+module.exports.crearUna         = crearUna;
+module.exports.actualizarUna    = actualizarUna;

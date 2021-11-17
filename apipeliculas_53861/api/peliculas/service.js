@@ -28,10 +28,10 @@ async function obtenerPelicula(id){
     }
 };
 
-async function obtenerPeliculasTitulo(nombre){
+async function obtenerPeliculasTitulo(nombre,exacta = false){
     // Validar que el id no sea nulo, undefined o vacío.
     if(nombre){
-        let peliculas = await modeloPeliculas.bucarPorTitulo(nombre);
+        let peliculas = await modeloPeliculas.bucarPorTitulo(nombre,exacta);
         if(peliculas){
             return peliculas;
         }else{
@@ -42,6 +42,70 @@ async function obtenerPeliculasTitulo(nombre){
     }
 };
 
+async function crearPelicula(pelicula){
+    let resultado = {};
+    // pelicula  -> null,undefined.
+    // Objecto vacio -> longitud es 0 -> conocer sus llaves.
+    
+    if( pelicula && Object.keys(pelicula).length > 0 ){
+        if(pelicula.titulo && pelicula.titulo !== ""){
+            let busqueda = await obtenerPeliculasTitulo(pelicula.titulo, true);
+            if(busqueda.length === 0){
+                let crearResultado = await modeloPeliculas.crearUna(pelicula);
+                /**
+                 *  {
+                 *      "acknowledged":true/false,
+                 *      "inserted":id/null
+                 *  }
+                 */
+                if(crearResultado && crearResultado.acknowledged){
+                    resultado.mensaje = "Película Creada Exitosamente.",
+                    resultado.data = crearResultado;
+                }else{
+                    resultado.mensaje = "Error al insertar película.",
+                    resultado.data = pelicula
+                }
+            }else{
+                resultado.mensaje = "Película ya existe.";
+                resultado.data = pelicula.titulo;
+            }
+        }else{
+            resultado.mensaje = "Título no existe o vacío.";
+            resultado.data = pelicula;
+        }
+    }else{
+        resultado.mensaje = "No hay datos para insertar."
+    }
+
+    return resultado;
+
+};
+
+async function actualizarPelicula(id,nuevosDatos){
+    /**
+     *  1. Longitud es exactamente igual a 24. -> length
+     *  2. Número del 0-9, letras A-F -> /^[0-9A-F]+$/i
+     */
+    let resultado = {};
+    if(id.length == 24 && /^[0-9A-F]+$/i.test(id)){
+        // TODO: Validar los nuevos datos.
+        let actualizarResultado = await modeloPeliculas.actualizarUna(id,nuevosDatos);
+        if(actualizarResultado && actualizarResultado.acknowledged){
+            resultado.mensaje = "Película actualizada correctamente",
+            resultado.data = actualizarResultado;
+        }else{
+            resultado.mensaje = "Error al actualizar película",
+            resultado.data = {"id":id, "datos":nuevosDatos}
+        };
+    }else{
+        resultado.mensaje = "ID inválido",
+        resultado.data = id;
+    };
+    return resultado;
+};
+
 module.exports.obtenerPeliculas = obtenerPeliculas;
 module.exports.obtenerPelicula = obtenerPelicula;
 module.exports.obtenerPeliculasTitulo = obtenerPeliculasTitulo;
+module.exports.crearPelicula = crearPelicula;
+module.exports.actualizarPelicula = actualizarPelicula;

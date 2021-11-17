@@ -1,13 +1,28 @@
+/**
+ *      EXPLICACIÓN PROFESOR:
+ * 
+ *      EXPRESS -> Nodejs
+ *          -> http.createServer( request,response ){
+ *                  request.url === "obtenerPeliculas";
+ *                  express.controlador.Peliculas.get.function(request,response);
+ *              };
+ * 
+ *      SOBRECARGA DE MÉTODOS:
+ *          -> function(err,req,res,next);
+ *          -> function(err,req,res);
+ *          -> function(req,res);
+ */
+
 const express               = require('express');
 const controladorPeliculas  = express.Router();
 const servicioPeliculas     = require('./service');
 
 /**
- * TODO     GET: Obtener todas las peliculas.
- * TODO     GET: Obtener una pelicula por el id.
- * TODO     GET: Obtener peliculas por el título.
- * TODO     POST: Crea películas.
- * TODO     PUT: Actualiza películas.
+ * TODO     GET:    Obtener todas las peliculas.
+ * TODO     GET:    Obtener una pelicula por el id.
+ * TODO     GET:    Obtener peliculas por el título.
+ * TODO     POST:   Crea películas.
+ * TODO     PUT:    Actualiza películas.
  * TODO     DELETE: Elimina películas.
  */
 
@@ -60,22 +75,22 @@ controladorPeliculas.get("/obtenerPeliculasTitulo/:nombre", async function(req,r
     });
 });
 
+/**
+ * Controlador para crear una película.
+ * @param Requiere: 
+ */
+controladorPeliculas.post("/crearPelicula", async function(req,res){
+    let pelicula = req.body;
+    let resultado = await servicioPeliculas.crearPelicula(pelicula);
 
+    res.send(resultado);
+});
+
+controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
+    let id = req.params.id;
+    let nuevosDatos = req.body;
+    let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
+    res.send(resultado);
+})
 
 module.exports = controladorPeliculas;
-
-
-/**
- *      EXPLICACIÓN PROFESOR:
- * 
- *      EXPRESS -> Nodejs
- *          -> http.createServer( request,response ){
- *                  request.url === "obtenerPeliculas";
- *                  express.controlador.Peliculas.get.function(request,response);
- *              };
- * 
- *      SOBRECARGA DE MÉTODOS:
- *          -> function(err,req,res,next);
- *          -> function(err,req,res);
- *          -> function(req,res);
- */

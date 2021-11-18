@@ -93,4 +93,17 @@ controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
     res.send(resultado);
 })
 
+/**
+ * Eliminar película por id.
+ * @param Requiere: id
+ * 
+ * se realizará a través del query-string
+ * http://localhost:3300/api/peliculas/eliminarPelicula?id=xxx
+ */
+ controladorPeliculas.delete("/eliminarPelicula", async function(req,res){
+    let id = req.query.id;
+    let resultado = await servicioPeliculas.eliminarPelicula(id);
+    res.send(resultado);
+});
+
 module.exports = controladorPeliculas;

@@ -4,6 +4,9 @@
 const express               = require('express');
 const bodyParser            = require('body-parser');
 const morgan                = require('morgan');
+const cors                  = require('cors');
+const compression           = require('compression');
+const helmet                = require('helmet');
 const controladorPeliculas  = require('./api/peliculas/controller');
 const controladorUsuarios   = require('./api/usuarios/controller');
 const basedatos             = require('./database/connection');
@@ -16,6 +19,10 @@ require('dotenv').config();
 
 // Se crea una instancia de "express", he iniciar la configuración.
 const app   = express();
+// app.use(cors({origin:"www.midominio.com","www.midominios.com"}));
+app.use(cors());
+app.use(helmet());
+app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true})); // Para formularios. Convierte el form-data en json 
 app.use(morgan(process.env.MORGAN_MODE));

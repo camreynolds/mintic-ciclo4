@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
 import '../estilos/resultado.css'
 
 export default function Resultado(props){
@@ -17,17 +19,19 @@ export default function Resultado(props){
         <>
             <div className="dv-pelicula" onClick={handleClick}>
                 <div className="dv-poster">
-                    <img onClick={handleClickPoster} alt="poster" src="https://dam.smashmexico.com.mx/wp-content/uploads/2019/12/Poster4.jpg"/>
+                    <img onClick={handleClickPoster} alt="poster" src={props.pelicula.poster}/>
                 </div>
                 <div>
-                    <h3>TÍTULO</h3>
+                    <h3>{props.pelicula.titulo}</h3>
                 </div>
                 <div>
-                    <p>SINOPSIS</p>
+                    <p>{props.pelicula.sinopsis}</p>
                 </div>
                 <div>
-                    Rating
-                    <i></i>
+                    <span>
+                        <FontAwesomeIcon icon={faStarHalfAlt} />
+                        {props.pelicula.rating}
+                    </span>
                 </div>
             </div>   
         </>

@@ -1,7 +1,10 @@
+import {useState} from "react";
 import Resultado from "../componentes/Resultado";
 import '../estilos/resultados-busqueda.css'
 
 export default function ResultadosBusqueda(){
+    // Aquí van los estados.
+    const [busqueda, setBusqueda] = useState('');
 
     /**
      *  CONTENEDOR DE EVENTOS.
@@ -24,9 +27,8 @@ export default function ResultadosBusqueda(){
     };
     
     function handleChange(evento){
-        console.log(evento);
-        console.log(evento.target);
-        console.log(evento.target.value);
+        let tituloPelicula = evento.target.value;
+        setBusqueda(tituloPelicula);
     };
 
     return (
@@ -42,6 +44,7 @@ export default function ResultadosBusqueda(){
             <div>
                 <fileset>
                     <legend>Listado Películas</legend>
+                    <div><span>Mostrando resultados para: {busqueda}</span></div>
                     <div className="dv-resultados">
                         <Resultado/>
                         <Resultado/>

@@ -1,0 +1,10 @@
+CHECKLIST.
+
+Estructura API con Express:
+
+1.- Importar módulos requeridos.
+2.- Configuración de módulos.
+3.- Inicialización de rutas.
+4.- Procesar petición.
+5.- Enviar respuesta.
+6.- Correr el servidor.

@@ -1,4 +1,4 @@
-CHECKLIST.
+CHECKLIST. - (CLASE - 10/11/2021)
 
 Estructura API con Express:
 
@@ -8,3 +8,9 @@ Estructura API con Express:
 4.- Procesar petición.
 5.- Enviar respuesta.
 6.- Correr el servidor.
+
+CREACIÓN DEL REPOSITORIO (CLASE - 11/11/2021)
+
+1.- Convertir lo que venga del body a json. Se utiliza body-parser.json(), y
+    body-parser.urlencoded({extended: true})
+2.- body-parser.json() convierte lo que se envía por el "querystring" al formato json.

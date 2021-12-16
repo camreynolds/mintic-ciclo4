@@ -69,5 +69,7 @@ Explicación 4:
             -> EXPORTAR EL MÓDULO.
             -> IMPORTAR LAS RUTAS A LA APLICACIÓN PRINCIPAL.
 
-
+Explicación 5:
             
+    - NODE  -> CREA UN OBJETO LLAMADO process.
+        -> process.env.PORT

@@ -4,10 +4,11 @@
 const express               = require('express');
 const bodyParser            = require('body-parser');   // CONVIERTE A JSON TODO LO QUE VENGA POR     
                                                         // EL CUERPO DE LA PETICIÓN.
+const morgan                = require('morgan');
 const controladorPeliculas  = require('./api/peliculas/controller');
 const controladorUsuarios   = require('./api/usuarios/controller');
-
-
+const basedatos             = require('./database/connection');
+require('dotenv').config();
 
 /**
  * INICIAR CONFIGURACIÓN.
@@ -17,7 +18,9 @@ app.use(bodyParser.json()); // UTILIZAMOS .use PARA CARGAR EN LA CONFIGURACIÓN 
                             // DE EXPRESS EL MÉTODO .json DE LA LIBRERÍA body-parser.
 app.use(bodyParser.urlencoded({extended: true}));   // CONVIERTE A json LOS DATOS QUE VIENEN DE UN 
                                                     // FORMULARIO EN FORMATO form-data.
-const port  = 3300;
+app.use(morgan(process.env.MORGAN_MODE));     // ESTO ES UN LOGGER. INDICA CUAL ES EL ENDPOINT QUE SE ESTÁ EJECUTANDO 
+                            // Y SU ESTADO.
+const port  = process.env.PORT;
 
 /**
  * INICIALIZACIÓN DE RUTAS.
@@ -25,11 +28,20 @@ const port  = 3300;
 app.use("/api/peliculas",controladorPeliculas);
 app.use("/api/usuarios",controladorUsuarios);
 
-
 /**
- * CORRER EL SERVIDOR.
- * AQUÍ ES DONDE EL API ESTARÁ MONITOREANDO LAS PETICIONES.
+ * LA CONEXIÓN A LA BASE DE DATOS SE DEBE GARANTIZAR ANTES DE EJECUTAR EL API.
  */
-app.listen(port, function(){
-    console.log("API ejecutándose en el puerto " + port);
-});
+basedatos.conectar()
+    .then(function(){
+        /**
+         * CORRER EL SERVIDOR.
+         * AQUÍ ES DONDE EL API ESTARÁ MONITOREANDO LAS PETICIONES.
+         */
+        app.listen(port, function(){
+            console.log("API ejecutándose en el puerto " + port);
+        });        
+    })
+    .catch(function(error){
+        console.log("Se presentó un error al conectarse a la BASE DE DATOS");
+        console.log(error);
+    });

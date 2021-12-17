@@ -74,3 +74,26 @@ Explicación 5:
             
     - NODE  -> CREA UN OBJETO LLAMADO process.
         -> process.env.PORT
+
+Explicación 6: clase 13/11/2021
+    
+    - PELICULAS
+        -> CONTROLADOR -> controller.js -> ENTRADA/SALIDA AL SISTEMA.
+            -> RECIBE DATOS DE ENTRADA -> REQUEST.
+            -> ENVÍA AL SERVICIO LAS ENTRADAS.
+            -> RECIBE DEL SERVICIO DATOS TRANSFORMADOS.
+            -> ENVÍA RESPUESTA AL CLIENTE.
+    
+        -> SERVICIO -> service.js -> MANIPULACIÓN DE DATOS -> LÓGICA DEL NEGOCIO.
+            -> RECIBE UNA ACIIÓN DESDE EL CONTROLADOR.
+                -> EJECUTA LA ACCIÓN.
+                    -> CONSULTA DATOS AL MODELO.
+                    -> REALIZA OPERACIONES MATEMÁTICAS, LÓGICAS CON LOS DATOS.
+            -> ENVÍA LOS RESULTADOS DE LA ACCIÓN AL CONTROLADOR.
+
+        -> MODELO -> GESTIONA LA BASE DE DATOS.
+            -> REALIZA CONSULTA DE LOS DATOS A PETICIÓN DE LOS SERVICIOS.
+                -> LECTURA -> SELECCIONA.
+                -> ESCRIBE.
+                -> ACTUALIZA.
+                -> ELIMINA.

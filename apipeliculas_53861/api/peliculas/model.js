@@ -26,10 +26,17 @@ function buscarPorId(id){
         });
 };
 
-async function buscarPorTitulo(nombre){
+function buscarPorTitulo(nombre,exacta){
     let db = basedatos.obtenerConexion();
+    let busqueda;
+    
+    if(exacta){
+        busqueda = nombre; 
+    }else{
+        busqueda = new RegExp(nombre,"i");
+    };
 
-    return await db.collection("peliculas").find({"titulo":new RegExp(nombre,"i")}).toArray()
+    return db.collection("peliculas").find({"titulo":busqueda}).toArray()
         .then(function(data){
             return data;
         })
@@ -38,6 +45,36 @@ async function buscarPorTitulo(nombre){
         });
 };
 
+function crearUna(pelicula){
+    let db = basedatos.obtenerConexion();
+    return db.collection("peliculas").insertOne(pelicula)
+        .then(function(resultado){
+            return resultado;
+        })
+        .catch(function(error){
+            console.log(error);
+        });
+};
+
+async function actualizarUna(id,nuevosDatos){
+    let db = basedatos.obtenerConexion();
+    return await db.collection("peliculas").updateOne(
+        {"_id":objectId(id)},   // Filtro de búsqueda.
+        {"$set":nuevosDatos}    // Operación de actualización --- $set,$unset
+    )
+    .then(function(resultado){
+        return resultado;
+    })
+    .catch(function(error){
+        console.log(error);
+    });
+};
+
+
+
+
 module.exports.buscarTodos      = buscarTodos;
 module.exports.buscarPorId      = buscarPorId;
 module.exports.buscarPorTitulo  = buscarPorTitulo;
+module.exports.crearUna         = crearUna;
+module.exports.actualizarUna    = actualizarUna;

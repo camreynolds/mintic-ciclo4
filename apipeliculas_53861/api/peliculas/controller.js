@@ -6,8 +6,8 @@ const servicioPeliculas = require('./service');
  * TODO: GET    -> OBTENER TODAS LAS PELÍCULAS.     - OK!
  * TODO: GET    -> OBTENER UNA PELÍCULA POR EL ID.  - OK!
  * TODO: GET    -> BUSCAR PELÍCULAS POR EL TÍTULO.  - OK!
- * TODO: POST   -> CREAR PELÍCULAS.
- * TODO: PUT    -> ACTUALIZAR PELÍCULAS.
+ * TODO: POST   -> CREAR PELÍCULAS.                 - OK!
+ * TODO: PUT    -> ACTUALIZAR PELÍCULAS.            
  * TODO: DELETE -> ELIMINAR PELÍCULAS.
  */
 
@@ -29,6 +29,7 @@ controladorPeliculas.get("/obtenerPeliculas",async function(req,res){
  */
 controladorPeliculas.get("/obtenerPelicula/:id",async function(req,res){
     let id          = req.params.id;
+    console.log(id);
     let pelicula    = await servicioPeliculas.obtenerPelicula(id);
     res.send({
         "mensaje": "Detalle de la película",
@@ -48,5 +49,28 @@ controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res
         "data": peliculas  
     });
 });
+
+/**
+ * CONTROLADOR PARA CREAR PELÍCULAS
+ */
+controladorPeliculas.post("/crearPelicula",async function(req,res){
+    let pelicula = req.body;
+    let resultado = await servicioPeliculas.crearPelicula(pelicula);
+    res.send(resultado);
+});
+
+/**
+ *  CONTROLADOR PARA ACTUALIZAR PELÍCULA.
+ *  @param REQUIRE: ID desde los parámetros.
+ *  @param REQUIRE: NUEVOS DATOS desde el body.
+ */
+controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
+    let id = req.params.id;
+    let nuevosDatos = req.body;
+    let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
+    res.send(resultado);
+});
+
+
 
 module.exports = controladorPeliculas;

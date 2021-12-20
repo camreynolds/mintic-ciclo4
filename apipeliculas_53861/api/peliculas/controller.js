@@ -7,8 +7,8 @@ const servicioPeliculas = require('./service');
  * TODO: GET    -> OBTENER UNA PELÍCULA POR EL ID.  - OK!
  * TODO: GET    -> BUSCAR PELÍCULAS POR EL TÍTULO.  - OK!
  * TODO: POST   -> CREAR PELÍCULAS.                 - OK!
- * TODO: PUT    -> ACTUALIZAR PELÍCULAS.            
- * TODO: DELETE -> ELIMINAR PELÍCULAS.
+ * TODO: PUT    -> ACTUALIZAR PELÍCULAS.            - OK!      
+ * TODO: DELETE -> ELIMINAR PELÍCULAS.              - OK!
  */
 
 /**
@@ -68,6 +68,16 @@ controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
     let id = req.params.id;
     let nuevosDatos = req.body;
     let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
+    res.send(resultado);
+});
+
+/**
+ *  CONTROLADOR PARA ELIMINAR PELÍCULA.
+ * @param REQUIRE: id
+ */
+controladorPeliculas.delete("/eliminarPelicula",async function(req,res){
+    let id = req.query.id;
+    let resultado = await servicioPeliculas.eliminarPelicula(id);
     res.send(resultado);
 });
 

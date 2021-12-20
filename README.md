@@ -97,3 +97,18 @@ Explicación 6: clase 13/11/2021
                 -> ESCRIBE.
                 -> ACTUALIZA.
                 -> ELIMINA.
+
+Explicación 7: clase 18/11/2021
+
+    - nuevoUsuario = {
+        "nombre": "xxxx",
+        "usuario": "yyyy",
+        "clave": "zzzz", -> ENCRIPTAR
+        "roles": ["A","B"]
+    }
+        
+    - BCRYPT
+        -> SALT_ROUNDS -> # DE VECES DE LA ENCRIPCIÓN.
+        -> SALT
+        -> CLAVE -> ENCRIPCIÓN
+    -> HASH

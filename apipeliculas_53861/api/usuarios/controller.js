@@ -1,17 +1,29 @@
 const express = require('express');
 const controladorUsuarios = express.Router();
+const servicioUsuarios = require("./service");
 
 /**
  * TODO: GET    -> LOGIN.
- * TODO: GET    -> OBTENER UN USUARIO POR EL ID.
+ * TODO: POST   -> CREAR USUARIO.
  */
 
-controladorUsuarios.get("/iniciarSesion",function(req,res){
+/**
+ *  CONTROLADOR PARA INICIAR SESIÓN.
+ */
+controladorUsuarios.get("/iniciarSesion",async function(req,res){
     let datos = req.query;
-    res.send("Los datos del usuario son: \n" + datos.usuario + " " + datos.contrasena);
+    let resultado = await servicioUsuarios.iniciarSesion(datos);
+    res.send(resultado);
 });
 
-
+/**
+ *  CONTROLADOR PARA CREAR USUARIO.
+ */
+controladorUsuarios.post("/crearUsuario",async function(req,res){
+    let nuevoUsuario = req.body;
+    let resultado = await servicioUsuarios.crearUsuario(nuevoUsuario);
+    res.send(resultado);
+});
 
 
 module.exports = controladorUsuarios;

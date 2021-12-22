@@ -112,3 +112,34 @@ Explicación 7: clase 18/11/2021
         -> SALT
         -> CLAVE -> ENCRIPCIÓN
     -> HASH
+
+Explicación 8: clase 19/11/2021
+
+    -> IMPLEMENTACIÓN DE LIBRERÍA DE SEGURIDAD.
+        -> CORS
+        -> HELMET
+        -> NODE-RATE-LIMITER
+        -> CSURF
+        -> UTILIZAR CERTIFICADOS TLS
+        -> UTILIZAR CERTIFICADOS SSL
+        -> SAFE-REGEX
+
+    -> RENDIMIENTO DE API EXPRESS
+        -> COMPRESSION
+        -> REGISTRO DE ACTIVIDAD / ERROR HANDLING
+            -> WINSTON-EXPRESS-MIDDLEWARE -> OPCION 1
+            -> BUNYAN-MIDDLEWARE -> OPCION 2
+
+    -> AUTENTICACIÓN Y VALIDACIÓN
+        -> INICIO DE SESIÓN
+        -> OAUTH2
+        -> SERVICIO DE AUTENTICACION (AUTH0)
+        -> SMS
+        -> API KEYS
+    -> AUTORIZACIÓN
+        -> CABECERAS HTTP
+        -> JWT
+        -> OAUTH2
+        -> SERVICIOS DE AUTORIZACIÓN
+        -> AUTORIZACIÓN BASADAS EN ROLES
+

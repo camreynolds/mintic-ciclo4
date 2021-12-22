@@ -1,6 +1,7 @@
 const express = require('express');
 const controladorPeliculas = express.Router();
 const servicioPeliculas = require('./service');
+const rutaProtegida     = require('../auth/jwt').validarToken;
 
 /**
  * TODO: GET    -> OBTENER TODAS LAS PELÍCULAS.     - OK!
@@ -14,7 +15,7 @@ const servicioPeliculas = require('./service');
 /**
  * CONTROLADOR PARA BUSCAR TODAS LAS PELÍCULAS.
  */
-controladorPeliculas.get("/obtenerPeliculas",async function(req,res){
+controladorPeliculas.get("/obtenerPeliculas",rutaProtegida,async function(req,res){
     // TODO: CAPTURAR LOS DATOS Y ENVIARLOS AL SERVICIO.
 
     let peliculas = await servicioPeliculas.obtenerPeliculas();
@@ -27,7 +28,7 @@ controladorPeliculas.get("/obtenerPeliculas",async function(req,res){
 /**
  * CONTROLADOR PARA BUSCAR UNA PELÍCULA POR ID.
  */
-controladorPeliculas.get("/obtenerPelicula/:id",async function(req,res){
+controladorPeliculas.get("/obtenerPelicula/:id",rutaProtegida,async function(req,res){
     let id          = req.params.id;
     console.log(id);
     let pelicula    = await servicioPeliculas.obtenerPelicula(id);
@@ -53,7 +54,7 @@ controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res
 /**
  * CONTROLADOR PARA CREAR PELÍCULAS
  */
-controladorPeliculas.post("/crearPelicula",async function(req,res){
+controladorPeliculas.post("/crearPelicula",rutaProtegida,async function(req,res){
     let pelicula = req.body;
     let resultado = await servicioPeliculas.crearPelicula(pelicula);
     res.send(resultado);
@@ -64,7 +65,7 @@ controladorPeliculas.post("/crearPelicula",async function(req,res){
  *  @param REQUIRE: ID desde los parámetros.
  *  @param REQUIRE: NUEVOS DATOS desde el body.
  */
-controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
+controladorPeliculas.put("/actualizarPelicula/:id",rutaProtegida,async function(req,res){
     let id = req.params.id;
     let nuevosDatos = req.body;
     let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
@@ -75,7 +76,7 @@ controladorPeliculas.put("/actualizarPelicula/:id",async function(req,res){
  *  CONTROLADOR PARA ELIMINAR PELÍCULA.
  * @param REQUIRE: id
  */
-controladorPeliculas.delete("/eliminarPelicula",async function(req,res){
+controladorPeliculas.delete("/eliminarPelicula",rutaProtegida,async function(req,res){
     let id = req.query.id;
     let resultado = await servicioPeliculas.eliminarPelicula(id);
     res.send(resultado);

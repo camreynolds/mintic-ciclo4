@@ -5,21 +5,29 @@ const express               = require('express');
 const bodyParser            = require('body-parser');   // CONVIERTE A JSON TODO LO QUE VENGA POR     
                                                         // EL CUERPO DE LA PETICIÓN.
 const morgan                = require('morgan');
+const cors                  = require('cors');
+const helmet                = require('helmet');
+const compression           = require('compression');
+const jwt                   = require('jsonwebtoken');
 const controladorPeliculas  = require('./api/peliculas/controller');
 const controladorUsuarios   = require('./api/usuarios/controller');
 const basedatos             = require('./database/connection');
+
 require('dotenv').config();
 
 /**
  * INICIAR CONFIGURACIÓN.
 */ 
 const app   = express();
+app.use(cors());
+app.use(helmet());
+app.use(compression());
 app.use(bodyParser.json()); // UTILIZAMOS .use PARA CARGAR EN LA CONFIGURACIÓN INICIAL
                             // DE EXPRESS EL MÉTODO .json DE LA LIBRERÍA body-parser.
 app.use(bodyParser.urlencoded({extended: true}));   // CONVIERTE A json LOS DATOS QUE VIENEN DE UN 
                                                     // FORMULARIO EN FORMATO form-data.
-app.use(morgan(process.env.MORGAN_MODE));     // ESTO ES UN LOGGER. INDICA CUAL ES EL ENDPOINT QUE SE ESTÁ EJECUTANDO 
-                            // Y SU ESTADO.
+app.use(morgan(process.env.MORGAN_MODE));       // ESTO ES UN LOGGER. INDICA CUAL ES EL ENDPOINT QUE SE ESTÁ EJECUTANDO 
+                                                // Y SU ESTADO.
 const port  = process.env.PORT;
 
 /**

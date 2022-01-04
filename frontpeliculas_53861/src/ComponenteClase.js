@@ -1,16 +1,14 @@
-import React from "react";
+import React from 'react';
 
+/***
+ * TODO CONSTRUCTOR
+ * TODO ATRIBUTOS / ESTADOS
+ * TODO MÉTODOS / COMPORTAMIENTOS
+ *  -> render() -> retorna código JSX
+ */
 export default class ComponenteClase extends React.Component{
-    /**
-     * Aquí va:
-     *  -> Constructor.
-     *  -> Atributos / Estados.
-     *  -> Métodos / Comportamientos.
-     *      -> render() -> Retorna código JSX.
-     */
-
     render(){
-        return (
+        return(
             <>
                 <h3>Componente de Clase</h3>
                 <span>Autor: Jimmy James</span>
@@ -18,4 +16,3 @@ export default class ComponenteClase extends React.Component{
         );
     }
 };
-

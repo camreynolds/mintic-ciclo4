@@ -1,110 +1,87 @@
-/**
- *      EXPLICACIÓN PROFESOR:
- * 
- *      EXPRESS -> Nodejs
- *          -> http.createServer( request,response ){
- *                  request.url === "obtenerPeliculas";
- *                  express.controlador.Peliculas.get.function(request,response);
- *              };
- * 
- *      SOBRECARGA DE MÉTODOS:
- *          -> function(err,req,res,next);
- *          -> function(err,req,res);
- *          -> function(req,res);
- */
-
-const express               = require('express');
-const controladorPeliculas  = express.Router();
-const servicioPeliculas     = require('./service');
-const rutaProtegida         = require('../auth/jwt').validarToken;
+const express = require('express');
+const controladorPeliculas = express.Router();
+const servicioPeliculas = require('./service');
+const rutaProtegida     = require('../auth/jwt').validarToken;
 
 /**
- * TODO     GET:    Obtener todas las peliculas.
- * TODO     GET:    Obtener una pelicula por el id.
- * TODO     GET:    Obtener peliculas por el título.
- * TODO     POST:   Crea películas.
- * TODO     PUT:    Actualiza películas.
- * TODO     DELETE: Elimina películas.
+ * TODO: GET    -> OBTENER TODAS LAS PELÍCULAS.     - OK!
+ * TODO: GET    -> OBTENER UNA PELÍCULA POR EL ID.  - OK!
+ * TODO: GET    -> BUSCAR PELÍCULAS POR EL TÍTULO.  - OK!
+ * TODO: POST   -> CREAR PELÍCULAS.                 - OK!
+ * TODO: PUT    -> ACTUALIZAR PELÍCULAS.            - OK!      
+ * TODO: DELETE -> ELIMINAR PELÍCULAS.              - OK!
  */
 
 /**
- *      Controlador es la Entrada/Salida del sistema.
- *          -> Recibe datos de entrada -> request.
- *          -> Envía al servicio las entrada.
- *          -> Recibe del servicio datos transformados.
- *          -> Envía respuesta al cliente. 
+ * CONTROLADOR PARA BUSCAR TODAS LAS PELÍCULAS.
  */
+controladorPeliculas.get("/obtenerPeliculas",rutaProtegida,async function(req,res){
+    // TODO: CAPTURAR LOS DATOS Y ENVIARLOS AL SERVICIO.
 
-/**
- * Controlador para buscar todas las películas.
- */
-controladorPeliculas.get("/obtenerpeliculas",async function(req,res){
-    // Capturar los datos, y enviarlos al servicio.
     let peliculas = await servicioPeliculas.obtenerPeliculas();
     res.send({
-        "mensaje":"Listado de peliculas",
-        "data":peliculas
+        'mensaje': "Listado de Películas",
+        'data': peliculas
     });
 });
 
 /**
- * Controlador para buscar una película por id.
- * @param Requiere: id
+ * CONTROLADOR PARA BUSCAR UNA PELÍCULA POR ID.
  */
-controladorPeliculas.get("/obtenerPelicula/:id", rutaProtegida,async function(req,res){
+controladorPeliculas.get("/obtenerPelicula/:id",rutaProtegida,async function(req,res){
     let id          = req.params.id;
+    console.log(id);
     let pelicula    = await servicioPeliculas.obtenerPelicula(id);
-
     res.send({
-        "mensaje":"Detalle de la película",
-        "data":pelicula
+        "mensaje": "Detalle de la película",
+        "data": pelicula
     });
 });
 
 /**
- * Controlador para buscar una películas por título.
- * @param Requiere: título
+ * CONTROLADOR PARA BUSCAR PELÍCULAS POR EL TÍTULO.
  */
-controladorPeliculas.get("/obtenerPeliculasTitulo/:nombre", rutaProtegida,async function(req,res){
+controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res){
     let nombre      = req.params.nombre;
-    let peliculas   = await servicioPeliculas.obtenerPeliculasTitulo(nombre);
-
+    let peliculas   = await servicioPeliculas.buscarPeliculasTitulo(nombre);
     res.send({
-        "mensaje":"Detalle de las películas",
-        "busqueda por": nombre,
-        "data":peliculas
+        "mensaje": "Resultado de búsqueda.",
+        "búsqueda": nombre,
+        "data": peliculas  
     });
 });
 
 /**
- * Controlador para crear una película.
- * @param Requiere: 
+ * CONTROLADOR PARA CREAR PELÍCULAS
  */
-controladorPeliculas.post("/crearPelicula", rutaProtegida,async function(req,res){
+controladorPeliculas.post("/crearPelicula",rutaProtegida,async function(req,res){
     let pelicula = req.body;
     let resultado = await servicioPeliculas.crearPelicula(pelicula);
-
     res.send(resultado);
 });
 
+/**
+ *  CONTROLADOR PARA ACTUALIZAR PELÍCULA.
+ *  @param REQUIRE: ID desde los parámetros.
+ *  @param REQUIRE: NUEVOS DATOS desde el body.
+ */
 controladorPeliculas.put("/actualizarPelicula/:id",rutaProtegida,async function(req,res){
     let id = req.params.id;
     let nuevosDatos = req.body;
     let resultado = await servicioPeliculas.actualizarPelicula(id,nuevosDatos);
     res.send(resultado);
-})
+});
 
 /**
- * Eliminar película por id.
- * @param Requiere: id
- * 
- * se realizará a través del query-string
- * http://localhost:3300/api/peliculas/eliminarPelicula?id=xxx
+ *  CONTROLADOR PARA ELIMINAR PELÍCULA.
+ * @param REQUIRE: id
  */
- controladorPeliculas.delete("/eliminarPelicula",rutaProtegida, async function(req,res){
+controladorPeliculas.delete("/eliminarPelicula",rutaProtegida,async function(req,res){
     let id = req.query.id;
     let resultado = await servicioPeliculas.eliminarPelicula(id);
     res.send(resultado);
 });
+
+
 
 module.exports = controladorPeliculas;

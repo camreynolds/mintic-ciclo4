@@ -1,15 +1,6 @@
-/**
- *      Modelo -> Gestiona la base de datos.
- *          -> Realiza consulta de los datos a petición de los servicios
-  *             -> Lectura -> Selecciona
- *              -> Escribe.
- *              -> Actualiza.
- *              -> Elimina.
- *          -> Envía los resultados de la acción al controlador.
- */
-
+const { ObjectId } = require('mongodb');
 const basedatos = require('../../database/connection');
-const objectId  = require('mongodb').ObjectId;
+const objectId = require('mongodb').ObjectId;
 
 function buscarTodos(){
     let db = basedatos.obtenerConexion();
@@ -23,10 +14,10 @@ function buscarTodos(){
         });
 };
 
-function bucarPorId(id){
+function buscarPorId(id){
     let db = basedatos.obtenerConexion();
 
-    return db.collection("peliculas").findOne({"_id": objectId(id) })
+    return db.collection("peliculas").findOne({"_id": objectId(id)})
         .then(function(data){
             return data;
         })
@@ -35,17 +26,17 @@ function bucarPorId(id){
         });
 };
 
-function bucarPorTitulo(nombre,exacta){
+function buscarPorTitulo(nombre,exacta){
     let db = basedatos.obtenerConexion();
     let busqueda;
-
+    
     if(exacta){
-        busqueda = nombre;
+        busqueda = nombre; 
     }else{
         busqueda = new RegExp(nombre,"i");
     };
 
-    return db.collection("peliculas").find({"titulo": busqueda}).toArray()
+    return db.collection("peliculas").find({"titulo":busqueda}).toArray()
         .then(function(data){
             return data;
         })
@@ -62,27 +53,27 @@ function crearUna(pelicula){
         })
         .catch(function(error){
             console.log(error);
-        })
+        });
 };
 
-function actualizarUna(id,nuevosDatos){
+async function actualizarUna(id,nuevosDatos){
     let db = basedatos.obtenerConexion();
-
-    return db.collection("peliculas").updateOne(
-        {"_id":objectId(id)}, // Filtro.
-        {"$set":nuevosDatos}, // Operación de actualización --- $set, $unset
+    return await db.collection("peliculas").updateOne(
+        {"_id":objectId(id)},   // Filtro de búsqueda.
+        {"$set":nuevosDatos}    // Operación de actualización --- $set,$unset
     )
     .then(function(resultado){
         return resultado;
     })
     .catch(function(error){
         console.log(error);
-    })
+    });
 };
 
-function eliminarUna(id){
+
+async function eliminarUna(id){
     let db = basedatos.obtenerConexion();
-    return db.collection("peliculas").deleteOne({"_id":objectId(id)})
+    return await db.collection("peliculas").deleteOne({"_id":objectId(id)})
         .then(function(resultado){
             return resultado;
         })
@@ -92,8 +83,8 @@ function eliminarUna(id){
 };
 
 module.exports.buscarTodos      = buscarTodos;
-module.exports.bucarPorId       = bucarPorId;
-module.exports.bucarPorTitulo   = bucarPorTitulo;
+module.exports.buscarPorId      = buscarPorId;
+module.exports.buscarPorTitulo  = buscarPorTitulo;
 module.exports.crearUna         = crearUna;
 module.exports.actualizarUna    = actualizarUna;
 module.exports.eliminarUna      = eliminarUna;

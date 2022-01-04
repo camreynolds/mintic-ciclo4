@@ -1,51 +1,55 @@
 /**
- * @param Requerido: Importar los módulos.
+ * IMPORTAR LOS MÓDULOS REQUERIDOS.
  */
 const express               = require('express');
-const bodyParser            = require('body-parser');
+const bodyParser            = require('body-parser');   // CONVIERTE A JSON TODO LO QUE VENGA POR     
+                                                        // EL CUERPO DE LA PETICIÓN.
 const morgan                = require('morgan');
 const cors                  = require('cors');
-const compression           = require('compression');
 const helmet                = require('helmet');
+const compression           = require('compression');
+const jwt                   = require('jsonwebtoken');
 const controladorPeliculas  = require('./api/peliculas/controller');
 const controladorUsuarios   = require('./api/usuarios/controller');
 const basedatos             = require('./database/connection');
+
 require('dotenv').config();
 
 /**
- *      NODE -> CREA UN OBJETO LLAMADO "process".
- *          process.env.PORT
- */
-
-// Se crea una instancia de "express", he iniciar la configuración.
+ * INICIAR CONFIGURACIÓN.
+*/ 
 const app   = express();
-// app.use(cors({origin:"www.midominio.com","www.midominios.com"}));
 app.use(cors());
 app.use(helmet());
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:true})); // Para formularios. Convierte el form-data en json 
-app.use(morgan(process.env.MORGAN_MODE));
+app.use(bodyParser.json()); // UTILIZAMOS .use PARA CARGAR EN LA CONFIGURACIÓN INICIAL
+                            // DE EXPRESS EL MÉTODO .json DE LA LIBRERÍA body-parser.
+app.use(bodyParser.urlencoded({extended: true}));   // CONVIERTE A json LOS DATOS QUE VIENEN DE UN 
+                                                    // FORMULARIO EN FORMATO form-data.
+app.use(morgan(process.env.MORGAN_MODE));       // ESTO ES UN LOGGER. INDICA CUAL ES EL ENDPOINT QUE SE ESTÁ EJECUTANDO 
+                                                // Y SU ESTADO.
 const port  = process.env.PORT;
 
-
-// Se inicia las rutas.
+/**
+ * INICIALIZACIÓN DE RUTAS.
+ */
 app.use("/api/peliculas",controladorPeliculas);
 app.use("/api/usuarios",controladorUsuarios);
 
-// Configurar en dónde el API va a estar escuchando las peticiones.
+/**
+ * LA CONEXIÓN A LA BASE DE DATOS SE DEBE GARANTIZAR ANTES DE EJECUTAR EL API.
+ */
 basedatos.conectar()
     .then(function(){
-        app.listen(port,function(){
-            console.log("API ejecutandose en puerto: " + port);
-            // console.log(basedatos.obtenerConexion());
-        });
+        /**
+         * CORRER EL SERVIDOR.
+         * AQUÍ ES DONDE EL API ESTARÁ MONITOREANDO LAS PETICIONES.
+         */
+        app.listen(port, function(){
+            console.log("API ejecutándose en el puerto " + port);
+        });        
     })
     .catch(function(error){
-        console.log("Se presento un error al conectar a la BASE DE DATOS");
+        console.log("Se presentó un error al conectarse a la BASE DE DATOS");
         console.log(error);
     });
-
-// app.listen(port,function(){
-//     console.log("API ejecutandose en puerto: " + port);
-// });

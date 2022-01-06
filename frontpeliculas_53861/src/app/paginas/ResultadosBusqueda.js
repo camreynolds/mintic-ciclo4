@@ -1,16 +1,22 @@
 import Resultado from "../componentes/Resultado";
 import '../estilos/resultados-busqueda.css'
+import { useState } from 'react';
+import peliculasDB from '../../peliculas100.json';
 
 export default function ResultadosBusqueda(){
+    // AQUÍ VAN LOS ESTADOS.
+    const [busqueda, setBusqueda]   = useState('');
+    const [resultado, setResultado] = useState([]);
+
     function handleSubmit(evento){
         evento.preventDefault(); 
     };
 
     function handleChange(evento){
-        console.log(evento);
-        console.log(evento.target);
-        console.log(evento.target.value);
-
+        let tituloPelicula = evento.target.value;
+        let resultadosBusqueda = peliculasDB.slice(0,tituloPelicula.length);
+        setResultado(resultadosBusqueda);
+        setBusqueda(tituloPelicula);
     };
 
     return(
@@ -26,13 +32,13 @@ export default function ResultadosBusqueda(){
             <div>
                 <fieldset>
                     <legend>Listado Películas</legend>
+                    <div>
+                        <span>Mostrando los resultados para: {busqueda}</span>
+                    </div>
                     <div className="dv-resultados">
-                        <Resultado/>
-                        <Resultado/>
-                        <Resultado/>
-                        <Resultado/>
-                        <Resultado/>
-                        <Resultado/>
+                        {resultado && resultado.length > 0 && resultado.map(pelicula => (
+                            <Resultado pelicula = {pelicula} />
+                        ))}
                     </div>
                 </fieldset>
             </div>

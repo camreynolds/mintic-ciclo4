@@ -1,6 +1,7 @@
 import Resultado from "../componentes/Resultado";
 import '../estilos/resultados-busqueda.css'
 import { useState } from 'react';
+import peliculasDB from '../../peliculas100.json';
 
 export default function ResultadosBusqueda(){
     // AQUÍ VAN LOS ESTADOS.
@@ -13,14 +14,8 @@ export default function ResultadosBusqueda(){
 
     function handleChange(evento){
         let tituloPelicula = evento.target.value;
-        
-        if(tituloPelicula.length >= 3){
-            let resultadosBusqueda = new Array(tituloPelicula.length).fill(0);
-            setResultado(resultadosBusqueda);
-        }else{
-            setResultado([]);
-        };
-        
+        let resultadosBusqueda = peliculasDB.slice(0,tituloPelicula.length);
+        setResultado(resultadosBusqueda);
         setBusqueda(tituloPelicula);
     };
 

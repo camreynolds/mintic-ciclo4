@@ -160,3 +160,7 @@ Explicación 11: clase 26/11/2021
     -> EXPLICACIÓN DE useEffect().
     -> EXPLICACIÓN DE ROUTERS.
         -> INSTALACIÓN DE LIBRERÍA react-router-dom@5.2.0
+
+Explicación 12: clase 30/11/2021
+
+    -> EXPLICACIÓN DE API Fetch().

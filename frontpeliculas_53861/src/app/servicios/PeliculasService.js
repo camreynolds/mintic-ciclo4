@@ -24,7 +24,7 @@ export function servicioBusquedaTitulo(titulo){
                 return respuesta.json();
             }
             else{
-                Promise.reject(respuesta.statusText);
+                return Promise.reject(respuesta.statusText);
             }
         })
         .catch( function(error){

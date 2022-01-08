@@ -1,6 +1,6 @@
 import Resultado from "../componentes/Resultado";
 import '../estilos/resultados-busqueda.css'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import peliculasDB from '../../peliculas100.json';
 
 export default function ResultadosBusqueda(){
@@ -8,14 +8,17 @@ export default function ResultadosBusqueda(){
     const [busqueda, setBusqueda]   = useState('');
     const [resultado, setResultado] = useState([]);
 
+    useEffect( () => {
+        let resultadosBusqueda = peliculasDB.slice(0,busqueda.length);
+        setResultado(resultadosBusqueda);
+    },[busqueda]);
+
     function handleSubmit(evento){
         evento.preventDefault(); 
     };
 
     function handleChange(evento){
         let tituloPelicula = evento.target.value;
-        let resultadosBusqueda = peliculasDB.slice(0,tituloPelicula.length);
-        setResultado(resultadosBusqueda);
         setBusqueda(tituloPelicula);
     };
 

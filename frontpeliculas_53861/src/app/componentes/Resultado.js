@@ -24,6 +24,9 @@ export default function Resultado(props){
                     <p>{props.pelicula.sinopsis}</p>
                 </div>
                 <div>
+                    <span>{props.pelicula.ano}</span>
+                </div>
+                <div>
                     <span>
                         <FontAwesomeIcon icon = {faStarHalfAlt} />
                         {props.pelicula.rating}

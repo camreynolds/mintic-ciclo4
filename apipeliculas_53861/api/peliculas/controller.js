@@ -46,8 +46,8 @@ controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res
     let peliculas   = await servicioPeliculas.buscarPeliculasTitulo(nombre);
     res.send({
         "mensaje": "Resultado de búsqueda.",
-        "búsqueda": nombre,
-        "data": peliculas  
+        "busqueda": nombre,
+        "data": peliculas    
     });
 });
 

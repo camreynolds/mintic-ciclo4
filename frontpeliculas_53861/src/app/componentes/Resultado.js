@@ -8,7 +8,7 @@ export default function Resultado(props){
 
     function handleClick(evento){
         evento.stopPropagation();
-        history.push("/detalle/" + props.pelicula._id.$oid);
+        history.push("/detalle/" + props.pelicula._id);
     };
 
      return(

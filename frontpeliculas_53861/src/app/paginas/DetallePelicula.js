@@ -38,7 +38,7 @@ export default function DetallePelicula(){
             <div className="dv-detalle_detalle">
                  <fieldset>
                      <legend>Detalle Película</legend>
-                     <h1>{pelicula.titulo}}</h1>
+                     <h1>{pelicula.titulo}</h1>
                      <div className="dv-main_detalle">
                          <div className="dv-poster_detalle">
                              <img alt="Póster" src={pelicula.poster}></img>
@@ -68,9 +68,9 @@ export default function DetallePelicula(){
                              <DetalleGeneral titulo="Géneros" datos={pelicula.generos}/>
                              <DetalleGeneral titulo="Idiomas" datos={pelicula.idiomas}/>
                              <DetalleGeneral titulo="Paises" datos={pelicula.paises}/>
-                             <DetalleGeneral titulo="Nominaciones" datos={pelicula.nominaciones}/>
+                             {/*<DetalleGeneral titulo="Nominaciones" datos={pelicula.nominaciones}/> */}
                          </div>
-                         <DetalleGeneral titulo="Directores" datos={pelicula.directores}/>
+                         {/* <DetalleGeneral titulo="Directores" datos={pelicula.directores}/> */}
                      </fieldset>
                  </fieldset>
             </div>

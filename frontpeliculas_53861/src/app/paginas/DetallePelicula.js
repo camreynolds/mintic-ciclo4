@@ -68,9 +68,9 @@ export default function DetallePelicula(){
                              <DetalleGeneral titulo="Géneros" datos={pelicula.generos}/>
                              <DetalleGeneral titulo="Idiomas" datos={pelicula.idiomas}/>
                              <DetalleGeneral titulo="Paises" datos={pelicula.paises}/>
-                             {/*<DetalleGeneral titulo="Nominaciones" datos={pelicula.nominaciones}/> */}
+                             <DetalleNominaciones titulo="Nominaciones" datos={pelicula.nominaciones}/>
                          </div>
-                         {/* <DetalleGeneral titulo="Directores" datos={pelicula.directores}/> */}
+                         <DetalleGeneral titulo="Directores" datos={pelicula.directores}/>
                      </fieldset>
                  </fieldset>
             </div>

@@ -1,5 +1,5 @@
 export default function DetalleActores(props){
-    console.log(props.datos);
+    // console.log(props.datos);
     return(
         <>
             <fieldset>

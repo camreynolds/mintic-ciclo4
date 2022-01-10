@@ -1,5 +1,5 @@
 export default function DetalleGeneral(props){
-    console.log(props.datos);
+    // console.log(props.datos);
     return(
         <>
             <fieldset>

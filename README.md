@@ -154,3 +154,13 @@ Explicación 9: clase 23/11/2021
 Explicación 10: clase 24/11/2021
 
     -> SE CREA ESTRUCTURA DE CARPETAS PARA PROYECTO DE REACI.
+
+Explicación 11: clase 26/11/2021
+
+    -> EXPLICACIÓN DE useEffect().
+    -> EXPLICACIÓN DE ROUTERS.
+        -> INSTALACIÓN DE LIBRERÍA react-router-dom@5.2.0
+
+Explicación 12: clase 30/11/2021
+
+    -> EXPLICACIÓN DE API Fetch().

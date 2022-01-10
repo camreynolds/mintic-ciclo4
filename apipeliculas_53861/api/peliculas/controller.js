@@ -28,7 +28,7 @@ controladorPeliculas.get("/obtenerPeliculas",rutaProtegida,async function(req,re
 /**
  * CONTROLADOR PARA BUSCAR UNA PELÍCULA POR ID.
  */
-controladorPeliculas.get("/obtenerPelicula/:id",rutaProtegida,async function(req,res){
+controladorPeliculas.get("/obtenerPelicula/:id",async function(req,res){
     let id          = req.params.id;
     console.log(id);
     let pelicula    = await servicioPeliculas.obtenerPelicula(id);
@@ -46,8 +46,8 @@ controladorPeliculas.get("/buscarPeliculasTitulo/:nombre",async function(req,res
     let peliculas   = await servicioPeliculas.buscarPeliculasTitulo(nombre);
     res.send({
         "mensaje": "Resultado de búsqueda.",
-        "búsqueda": nombre,
-        "data": peliculas  
+        "busqueda": nombre,
+        "data": peliculas    
     });
 });
 

@@ -9,15 +9,24 @@ export default function Header(props){
         if(name === "btnIniciar"){
             history.push("/login");
         }else{
-
+            localStorage.removeItem('auth');
+            props.autenticado(null);
+            history.push("/");
         };
     };
     
     return (
         <>
             <header className="header">
-                <button type="button" name="btnIniciar" onClick={handleClick}>Iniciar Sesión</button>
-                <button type="button" name="btnCerrar" onClick={handleClick}>Cerrar Sesión</button>
+                {props.usuario ? 
+                    (
+                        <button type="button" name="btnCerrar" onClick={handleClick}>Cerrar Sesión</button>
+                    )
+                        :
+                    (
+                        <button type="button" name="btnIniciar" onClick={handleClick}>Iniciar Sesión</button>
+                    )
+                }
             </header>
             {props.children}
         </>

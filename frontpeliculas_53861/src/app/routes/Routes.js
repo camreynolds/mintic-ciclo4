@@ -22,7 +22,7 @@ export default function Routes(){
 
     return (
         <Switch>
-            <Header>
+            <Header usuario={usuario} autenticado={setUsuario}>
                 <Route exact path="/"               component={ResultadosBusqueda}/>
                 <Route exact path="/detalle/:id"    component={DetallePelicula}/>
                 <Route exact path="/login">

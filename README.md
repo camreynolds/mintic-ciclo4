@@ -164,3 +164,11 @@ Explicación 11: clase 26/11/2021
 Explicación 12: clase 30/11/2021
 
     -> EXPLICACIÓN DE API Fetch().
+
+Explicación 13: clase 03/12/2021
+
+    -> SE CREA LOGIN PAGE.
+        -> SE CREA EL COMPONENTE LOGIN.
+        -> SE CREA LA RUTA.
+    -> SE CREA UN HEADER COMÚN.
+        -> COMPONENTES ENVOLVENTES O WRAPPERS.

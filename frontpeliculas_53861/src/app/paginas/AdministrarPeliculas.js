@@ -1,7 +1,14 @@
+import ListarPeliculas from '../componentes/ListarPeliculas';
+
 export default function AdministrarPeliculas(){
     return(
         <>
-            <h1>Administrar Películas.</h1>
+            <fieldset>
+                <legend>Administrar películas.</legend>
+                <div>
+                    <ListarPeliculas/>
+                </div>
+            </fieldset>
         </>
     );
 };

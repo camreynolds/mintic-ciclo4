@@ -1,4 +1,4 @@
-import { URL_API_PELICULAS } from '../config/config';
+import { URL_API_PELICULAS,getToken } from '../config/config';
 
 export function servicioBusquedaTitulo(titulo){
     const path = "/peliculas/buscarPeliculasTitulo/" + titulo;
@@ -49,6 +49,31 @@ export function servicioBusquedaId(id){
             }
         })
         .catch(function(error){
+            console.log(error);
+        });
+};
+
+export function servicioBusquedaPeliculas(){
+    const path = "/peliculas/obtenerPeliculas";
+    const config = {
+        method:     "GET",
+        mode:       "cors",
+        headers:    {
+            "authorization": "Bearer " + getToken(),  
+        },
+    };
+
+    return fetch(URL_API_PELICULAS + path, config)
+        .then( function(respuesta){
+            console.log(respuesta);
+            if(respuesta.ok){
+                return respuesta.json(); // retorna la respuesta en formato json.
+            }
+            else{
+                return Promise.reject(respuesta.statusText);
+            }
+        })
+        .catch( error => {
             console.log(error);
         });
 };

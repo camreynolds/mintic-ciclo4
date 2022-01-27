@@ -93,8 +93,16 @@ export default function AdministrarPeliculas(){
          *  [...[1,2,3]] -> [1,2,3,4]
          */
         evento.preventDefault();
-        const nuevosActores= [...actores, {nombre:"", apellido:""}];
-        setActores(nuevosActores); 
+        const {name,value} = evento.target;
+        if(name==="btnAdicionar"){
+            const nuevosActores= [...actores, {nombre:"", apellido:""}];
+            setActores(nuevosActores); 
+        }
+        else{
+            setActores( actores => (
+                actores.filter( (actor,idx) => idx !== parseInt(value) )
+            ));
+        }
     };
 
     function handleChangeActores(evento){
@@ -157,6 +165,7 @@ export default function AdministrarPeliculas(){
                                 id          = {index}
                                 actor       = {actor}
                                 onChange    ={handleChangeActores}
+                                onClick     ={handleClickActores}
                             />
                         ))}
                     </fieldset>

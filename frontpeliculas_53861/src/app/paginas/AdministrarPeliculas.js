@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ListarPeliculas from '../componentes/ListarPeliculas';
 import * as PeliculasService from '../servicios/PeliculasService';
 import FormActor from '../componentes/FormActor';
+import FomrGeneral from '../componentes/FormGeneral';
 
 export default function AdministrarPeliculas(){
     const [titulo,setTitulo] = useState('');
@@ -12,6 +13,11 @@ export default function AdministrarPeliculas(){
     const [poster,setPoster] = useState('');
     const [sinopsis,setSinopsis] = useState('');
     const [actores,setActores] = useState([]);
+    const [generos,setGeneros] = useState([]);
+    const [idiomas,setIdiomas] = useState([]);
+    const [paises,setPaises] = useState([]);
+    const [directores,setDirectores] = useState([]);
+    const [nominaciones,setNominaciones] = useState({cantidad:0,ganadas:0});
 
     function handleChange(evento){
         const {name,value} = evento.target;
@@ -57,7 +63,12 @@ export default function AdministrarPeliculas(){
             "poster":           poster,
             "tipo":             tipo,
             "sinopsis":         sinopsis,
-            "actores":          actores
+            "actores":          actores,
+            "generos":          generos,
+            "idiomas":          idiomas,
+            "paises":           paises,
+            "directores":       directores,
+            "nominaciones":     nominaciones,
         };
         
         PeliculasService.servicioCrearPelicula(datosPelicula)
@@ -72,6 +83,8 @@ export default function AdministrarPeliculas(){
                     setTipo('');
                     setSinopsis('');
                     setActores([]);
+                    setDirectores([]);
+                    setNominaciones({cantidad:0,ganadas:0})
                 }
                 else{
                     alert(resultadoCrear.mensaje);
@@ -121,6 +134,32 @@ export default function AdministrarPeliculas(){
         ));
     };
 
+    function handleChangeNominaciones(evento){
+        const {name,value} = evento.target;
+        setNominaciones( nominaciones => (
+            {...nominaciones, [name] : value}   //Se encierra [name] entre corchetes para decir que tome 
+                                                //el valor de name,y lo reemplaze con el valor de value.
+            /**
+             * EXPLICACIÖN  OPERADOR SPREAD.
+             * 
+             * name = "cantiadad",
+             * value = 10,
+             * [...nominaciones] -> crea un objeto clave,valor.
+             * nominaciones = {
+             *  cantidad: 0,
+             *  ganadas: 0
+             * }
+             * {...nominaciones, [name]:value}
+             * {
+             *  cantidad = 10, -> al encontrar el mismo key(valor de name) sobreescribe el valor(value)
+             *  ganadas = 0
+             * }
+             */
+
+
+        ))
+    };
+
     return(
         <>
             <fieldset>
@@ -168,6 +207,41 @@ export default function AdministrarPeliculas(){
                                 onClick     ={handleClickActores}
                             />
                         ))}
+                    </fieldset>
+                    <FomrGeneral
+                        titulo="Géneros"
+                        id="generos"
+                        datos={generos}
+                        actualizar={setGeneros}
+                    />
+                    <FomrGeneral
+                        titulo="Idiomas"
+                        id="idiomas"
+                        datos={idiomas}
+                        actualizar={setIdiomas}
+                    />
+                    <FomrGeneral
+                        titulo="Países"
+                        id="paises"
+                        datos={paises}
+                        actualizar={setPaises}
+                    />
+                    <FomrGeneral
+                        titulo="Directores"
+                        id="directores"
+                        datos={directores}
+                        actualizar={setDirectores}
+                    />
+                    <fieldset>
+                        <legend>Nominaciones</legend>
+                        <div>
+                            <label htmlFor='cantidad'>Cantidad:</label>
+                            <input type='text' id='cantidad' name='cantidad' value={nominaciones.cantidad} onChange={handleChangeNominaciones}/>
+                        </div>
+                        <div>
+                            <label htmlFor='ganadas'>Ganadas:</label>
+                            <input type='text' id='ganadas' name='ganadas' value={nominaciones.ganadas} onChange={handleChangeNominaciones}/>
+                        </div>
                     </fieldset>
                     <div>
                         <button type='button' onClick={handleClick}>Guardar</button>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import ListarPeliculas from '../componentes/ListarPeliculas';
 import * as PeliculasService from '../servicios/PeliculasService';
 import FormActor from '../componentes/FormActor';
@@ -18,6 +18,30 @@ export default function AdministrarPeliculas(){
     const [paises,setPaises] = useState([]);
     const [directores,setDirectores] = useState([]);
     const [nominaciones,setNominaciones] = useState({cantidad:0,ganadas:0});
+    const [id,setId] = useState('')
+
+    useEffect( () => {
+        if(id){
+            PeliculasService.servicioBusquedaId(id)
+            .then( function(resultadoBusqueda){
+                const pelicula = resultadoBusqueda.data;
+                    setId(pelicula.id);
+                    setTitulo(pelicula.titulo);
+                    setAno(pelicula.ano);
+                    setTipo(pelicula.tipo);
+                    setRating(pelicula.rating);
+                    setClasificacion(pelicula.clasificacion);
+                    setPoster(pelicula.poster);
+                    setSinopsis(pelicula.sinopsis);
+                    setActores(pelicula.actores);
+                    setGeneros(pelicula.generos);
+                    setIdiomas(pelicula.idiomas);
+                    setPaises(pelicula.paises);
+                    setDirectores(pelicula.directores);
+                    setNominaciones(pelicula.nominaciones);
+                });
+        }
+    },[id]);
 
     function handleChange(evento){
         const {name,value} = evento.target;
@@ -71,25 +95,36 @@ export default function AdministrarPeliculas(){
             "nominaciones":     nominaciones,
         };
         
-        PeliculasService.servicioCrearPelicula(datosPelicula)
-            .then(function(resultadoCrear){
-                if(resultadoCrear.datos.acknowledged){
-                    alert(resultadoCrear.mensaje);
-                    setTitulo('');
-                    setAno('');
-                    setRating('');
-                    setClasificacion('');
-                    setPoster('');
-                    setTipo('');
-                    setSinopsis('');
-                    setActores([]);
-                    setDirectores([]);
-                    setNominaciones({cantidad:0,ganadas:0})
-                }
-                else{
-                    alert(resultadoCrear.mensaje);
-                }
-            })
+        if(id){
+            PeliculasService.servicioActualizarPelicula(id,pelicula)
+                .then(function(resultadoActualizar){
+                    
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+        }else{
+            PeliculasService.servicioCrearPelicula(datosPelicula)
+                .then(function(resultadoCrear){
+                    if(resultadoCrear.datos.acknowledged){
+                        alert(resultadoCrear.mensaje);
+                        setTitulo('');
+                        setAno('');
+                        setRating('');
+                        setClasificacion('');
+                        setPoster('');
+                        setTipo('');
+                        setSinopsis('');
+                        setActores([]);
+                        setDirectores([]);
+                        setNominaciones({cantidad:0,ganadas:0})
+                    }
+                    else{
+                        alert(resultadoCrear.mensaje);
+                    }
+                })
+        };
+
     };
     
     function handleClickActores(evento){
@@ -248,7 +283,9 @@ export default function AdministrarPeliculas(){
                     </div>
                 </form>
                 <div>
-                    <ListarPeliculas/>
+                    <ListarPeliculas
+                        setId={setId}
+                    />
                 </div>
             </fieldset>
         </>

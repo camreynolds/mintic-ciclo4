@@ -1,7 +1,7 @@
 import { useState,useEffect} from 'react';
 import * as PeliculasService from '../servicios/PeliculasService';
 
-export default function ListarPeliculas(){
+export default function ListarPeliculas(props){
     const [peliculas, setPeliculas] = useState([]);
 
     useEffect( () => {
@@ -19,7 +19,9 @@ export default function ListarPeliculas(){
         const idPelicula = value;
         switch(name){
             case 'btnEditar':
+                props.setId(idPelicula);
             break;
+            
             case 'btnEliminar':
                 return PeliculasService.servicioEliminarPelicula(idPelicula)
                     .then(function(resultadoEliminar){

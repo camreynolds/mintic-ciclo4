@@ -138,7 +138,8 @@ export function servicioActualizarPelicula(id,pelicula){
         },
         body: JSON.stringify(pelicula)
     };
-    return fetch(URL_API_PELICULAS+path,config)
+
+    return fetch(URL_API_PELICULAS + path, config)
         .then(function(respuesta){
             if(respuesta.ok){
                 return respuesta.json();

@@ -5,6 +5,7 @@ import FormActor from '../componentes/FormActor';
 import FomrGeneral from '../componentes/FormGeneral';
 
 export default function AdministrarPeliculas(){
+    const [id,setId] = useState('')
     const [titulo,setTitulo] = useState('');
     const [ano,setAno] = useState('');
     const [tipo,setTipo] = useState('');
@@ -18,27 +19,26 @@ export default function AdministrarPeliculas(){
     const [paises,setPaises] = useState([]);
     const [directores,setDirectores] = useState([]);
     const [nominaciones,setNominaciones] = useState({cantidad:0,ganadas:0});
-    const [id,setId] = useState('')
 
     useEffect( () => {
         if(id){
             PeliculasService.servicioBusquedaId(id)
-            .then( function(resultadoBusqueda){
-                const pelicula = resultadoBusqueda.data;
-                    setId(pelicula.id);
-                    setTitulo(pelicula.titulo);
-                    setAno(pelicula.ano);
-                    setTipo(pelicula.tipo);
-                    setRating(pelicula.rating);
-                    setClasificacion(pelicula.clasificacion);
-                    setPoster(pelicula.poster);
-                    setSinopsis(pelicula.sinopsis);
-                    setActores(pelicula.actores);
-                    setGeneros(pelicula.generos);
-                    setIdiomas(pelicula.idiomas);
-                    setPaises(pelicula.paises);
-                    setDirectores(pelicula.directores);
-                    setNominaciones(pelicula.nominaciones);
+                .then( function(resultadoBusqueda){
+                    const pelicula = resultadoBusqueda.data;
+                        // setId(pelicula.id);
+                        setTitulo(pelicula.titulo);
+                        setAno(pelicula.ano);
+                        setTipo(pelicula.tipo);
+                        setRating(pelicula.rating);
+                        setClasificacion(pelicula.clasificacion);
+                        setPoster(pelicula.poster);
+                        setSinopsis(pelicula.sinopsis);
+                        setActores(pelicula.actores);
+                        setGeneros(pelicula.generos);
+                        setIdiomas(pelicula.idiomas);
+                        setPaises(pelicula.paises);
+                        setDirectores(pelicula.directores);
+                        setNominaciones(pelicula.nominaciones);
                 });
         }
     },[id]);
@@ -62,12 +62,12 @@ export default function AdministrarPeliculas(){
                 setClasificacion(value);
             break;
 
-            case "poster":
-                setPoster(value);
-            break;
-
             case "tipo":
                 setTipo(value);
+            break;
+            
+            case "poster":
+                setPoster(value);
             break;
 
             case "sinopsis":
@@ -93,14 +93,12 @@ export default function AdministrarPeliculas(){
             "paises":           paises,
             "directores":       directores,
             "nominaciones":     nominaciones,
-        };
+        }
         
         if(id){
             PeliculasService.servicioActualizarPelicula(id,datosPelicula)
                 .then(function(resultadoActualizar){
                     if(resultadoActualizar.datos.acknowledged){
-                        alert(resultadoActualizar.mensaje);
-                    }else{
                         alert(resultadoActualizar.mensaje);
                         setTitulo('');
                         setAno('');
@@ -110,15 +108,24 @@ export default function AdministrarPeliculas(){
                         setTipo('');
                         setSinopsis('');
                         setActores([]);
+                        setGeneros([]);
+                        setIdiomas([]);
+                        setPaises([]);
                         setDirectores([]);
                         setNominaciones({cantidad:0,ganadas:0});
                         setId('');
+                    }
+                    else
+                    {
+                        alert(resultadoActualizar.mensaje);
                     }
                 })
                 .catch(function(error){
                     console.log(error);
                 });
-        }else{
+        }
+        else
+        {
             PeliculasService.servicioCrearPelicula(datosPelicula)
                 .then(function(resultadoCrear){
                     if(resultadoCrear.datos.acknowledged){
@@ -131,10 +138,14 @@ export default function AdministrarPeliculas(){
                         setTipo('');
                         setSinopsis('');
                         setActores([]);
+                        setGeneros([]);
+                        setIdiomas([]);
+                        setPaises([]);
                         setDirectores([]);
                         setNominaciones({cantidad:0,ganadas:0})
                     }
-                    else{
+                    else
+                    {
                         alert(resultadoCrear.mensaje);
                     }
                 })

@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import ListarPeliculas from '../componentes/ListarPeliculas';
 import * as PeliculasService from '../servicios/PeliculasService';
 import FormActor from '../componentes/FormActor';
+import FomrGeneral from '../componentes/FormGeneral';
 
 export default function AdministrarPeliculas(){
+    const [id,setId] = useState('')
     const [titulo,setTitulo] = useState('');
     const [ano,setAno] = useState('');
     const [tipo,setTipo] = useState('');
@@ -12,6 +14,34 @@ export default function AdministrarPeliculas(){
     const [poster,setPoster] = useState('');
     const [sinopsis,setSinopsis] = useState('');
     const [actores,setActores] = useState([]);
+    const [generos,setGeneros] = useState([]);
+    const [idiomas,setIdiomas] = useState([]);
+    const [paises,setPaises] = useState([]);
+    const [directores,setDirectores] = useState([]);
+    const [nominaciones,setNominaciones] = useState({cantidad:0,ganadas:0});
+
+    useEffect( () => {
+        if(id){
+            PeliculasService.servicioBusquedaId(id)
+                .then( function(resultadoBusqueda){
+                    const pelicula = resultadoBusqueda.data;
+                        // setId(pelicula.id);
+                        setTitulo(pelicula.titulo);
+                        setAno(pelicula.ano);
+                        setTipo(pelicula.tipo);
+                        setRating(pelicula.rating);
+                        setClasificacion(pelicula.clasificacion);
+                        setPoster(pelicula.poster);
+                        setSinopsis(pelicula.sinopsis);
+                        setActores(pelicula.actores);
+                        setGeneros(pelicula.generos);
+                        setIdiomas(pelicula.idiomas);
+                        setPaises(pelicula.paises);
+                        setDirectores(pelicula.directores);
+                        setNominaciones(pelicula.nominaciones);
+                });
+        }
+    },[id]);
 
     function handleChange(evento){
         const {name,value} = evento.target;
@@ -32,12 +62,12 @@ export default function AdministrarPeliculas(){
                 setClasificacion(value);
             break;
 
-            case "poster":
-                setPoster(value);
-            break;
-
             case "tipo":
                 setTipo(value);
+            break;
+            
+            case "poster":
+                setPoster(value);
             break;
 
             case "sinopsis":
@@ -57,26 +87,70 @@ export default function AdministrarPeliculas(){
             "poster":           poster,
             "tipo":             tipo,
             "sinopsis":         sinopsis,
-            "actores":          actores
-        };
+            "actores":          actores,
+            "generos":          generos,
+            "idiomas":          idiomas,
+            "paises":           paises,
+            "directores":       directores,
+            "nominaciones":     nominaciones,
+        }
         
-        PeliculasService.servicioCrearPelicula(datosPelicula)
-            .then(function(resultadoCrear){
-                if(resultadoCrear.datos.acknowledged){
-                    alert(resultadoCrear.mensaje);
-                    setTitulo('');
-                    setAno('');
-                    setRating('');
-                    setClasificacion('');
-                    setPoster('');
-                    setTipo('');
-                    setSinopsis('');
-                    setActores([]);
-                }
-                else{
-                    alert(resultadoCrear.mensaje);
-                }
-            })
+        if(id){
+            PeliculasService.servicioActualizarPelicula(id,datosPelicula)
+                .then(function(resultadoActualizar){
+                    if(resultadoActualizar.datos.acknowledged){
+                        alert(resultadoActualizar.mensaje);
+                        setTitulo('');
+                        setAno('');
+                        setRating('');
+                        setClasificacion('');
+                        setPoster('');
+                        setTipo('');
+                        setSinopsis('');
+                        setActores([]);
+                        setGeneros([]);
+                        setIdiomas([]);
+                        setPaises([]);
+                        setDirectores([]);
+                        setNominaciones({cantidad:0,ganadas:0});
+                        setId('');
+                    }
+                    else
+                    {
+                        alert(resultadoActualizar.mensaje);
+                    }
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+        }
+        else
+        {
+            PeliculasService.servicioCrearPelicula(datosPelicula)
+                .then(function(resultadoCrear){
+                    if(resultadoCrear.datos.acknowledged){
+                        alert(resultadoCrear.mensaje);
+                        setTitulo('');
+                        setAno('');
+                        setRating('');
+                        setClasificacion('');
+                        setPoster('');
+                        setTipo('');
+                        setSinopsis('');
+                        setActores([]);
+                        setGeneros([]);
+                        setIdiomas([]);
+                        setPaises([]);
+                        setDirectores([]);
+                        setNominaciones({cantidad:0,ganadas:0})
+                    }
+                    else
+                    {
+                        alert(resultadoCrear.mensaje);
+                    }
+                })
+        };
+
     };
     
     function handleClickActores(evento){
@@ -119,6 +193,32 @@ export default function AdministrarPeliculas(){
                 };
             })
         ));
+    };
+
+    function handleChangeNominaciones(evento){
+        const {name,value} = evento.target;
+        setNominaciones( nominaciones => (
+            {...nominaciones, [name] : value}   //Se encierra [name] entre corchetes para decir que tome 
+                                                //el valor de name,y lo reemplaze con el valor de value.
+            /**
+             * EXPLICACIÖN  OPERADOR SPREAD.
+             * 
+             * name = "cantiadad",
+             * value = 10,
+             * [...nominaciones] -> crea un objeto clave,valor.
+             * nominaciones = {
+             *  cantidad: 0,
+             *  ganadas: 0
+             * }
+             * {...nominaciones, [name]:value}
+             * {
+             *  cantidad = 10, -> al encontrar el mismo key(valor de name) sobreescribe el valor(value)
+             *  ganadas = 0
+             * }
+             */
+
+
+        ))
     };
 
     return(
@@ -169,12 +269,49 @@ export default function AdministrarPeliculas(){
                             />
                         ))}
                     </fieldset>
+                    <FomrGeneral
+                        titulo="Géneros"
+                        id="generos"
+                        datos={generos}
+                        actualizar={setGeneros}
+                    />
+                    <FomrGeneral
+                        titulo="Idiomas"
+                        id="idiomas"
+                        datos={idiomas}
+                        actualizar={setIdiomas}
+                    />
+                    <FomrGeneral
+                        titulo="Países"
+                        id="paises"
+                        datos={paises}
+                        actualizar={setPaises}
+                    />
+                    <FomrGeneral
+                        titulo="Directores"
+                        id="directores"
+                        datos={directores}
+                        actualizar={setDirectores}
+                    />
+                    <fieldset>
+                        <legend>Nominaciones</legend>
+                        <div>
+                            <label htmlFor='cantidad'>Cantidad:</label>
+                            <input type='text' id='cantidad' name='cantidad' value={nominaciones.cantidad} onChange={handleChangeNominaciones}/>
+                        </div>
+                        <div>
+                            <label htmlFor='ganadas'>Ganadas:</label>
+                            <input type='text' id='ganadas' name='ganadas' value={nominaciones.ganadas} onChange={handleChangeNominaciones}/>
+                        </div>
+                    </fieldset>
                     <div>
                         <button type='button' onClick={handleClick}>Guardar</button>
                     </div>
                 </form>
                 <div>
-                    <ListarPeliculas/>
+                    <ListarPeliculas
+                        setId={setId}
+                    />
                 </div>
             </fieldset>
         </>

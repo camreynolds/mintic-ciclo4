@@ -96,9 +96,24 @@ export default function AdministrarPeliculas(){
         };
         
         if(id){
-            PeliculasService.servicioActualizarPelicula(id,pelicula)
+            PeliculasService.servicioActualizarPelicula(id,datosPelicula)
                 .then(function(resultadoActualizar){
-                    
+                    if(resultadoActualizar.datos.acknowledged){
+                        alert(resultadoActualizar.mensaje);
+                    }else{
+                        alert(resultadoActualizar.mensaje);
+                        setTitulo('');
+                        setAno('');
+                        setRating('');
+                        setClasificacion('');
+                        setPoster('');
+                        setTipo('');
+                        setSinopsis('');
+                        setActores([]);
+                        setDirectores([]);
+                        setNominaciones({cantidad:0,ganadas:0});
+                        setId('');
+                    }
                 })
                 .catch(function(error){
                     console.log(error);

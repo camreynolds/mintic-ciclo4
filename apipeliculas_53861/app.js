@@ -12,6 +12,10 @@ const jwt                   = require('jsonwebtoken');
 const controladorPeliculas  = require('./api/peliculas/controller');
 const controladorUsuarios   = require('./api/usuarios/controller');
 const basedatos             = require('./database/connection');
+const path                  = require('path'); // MÓDULO DE NODEJS QUE PERMITE RESOLVER LAS RUTAS DE LOS 
+const { join } = require('path');
+                                               // ARCHIVOS QUE SE ENCUENTRAN EN EL SERVIDOR DE MANERA 
+                                               // CORRECTA, INDEPENDIENTEMENTE DEL SO.
 
 require('dotenv').config();
 
@@ -35,6 +39,17 @@ const port  = process.env.PORT;
  */
 app.use("/api/peliculas",controladorPeliculas);
 app.use("/api/usuarios",controladorUsuarios);
+
+/**
+ * CONFIGURAR LA CARPETA PÚBLICA.
+ */
+const publicPath = path.resolve(__dirname,'public');
+app.use(express.static(publicPath));
+
+app.get("/",function(req,res){
+    res.sendFile(path.join(__dirname + "./index.html"));
+});
+
 
 /**
  * LA CONEXIÓN A LA BASE DE DATOS SE DEBE GARANTIZAR ANTES DE EJECUTAR EL API.
